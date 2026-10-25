@@ -133,7 +133,7 @@ export const ApprovalsView: React.FC = () => {
       )}
 
       {/* Filter Tabs */}
-      <div style={{ display: 'flex', gap: '6px' }}>
+      <div className="filter-tab-bar">
         {[
           { id: 'all', label: `All (${approvals.length})` },
           { id: 'pending', label: 'Pending Review' },
@@ -145,7 +145,7 @@ export const ApprovalsView: React.FC = () => {
             key={f.id}
             onClick={() => setStatusFilter(f.id as any)}
             className={statusFilter === f.id ? 'btn-primary' : 'btn-secondary'}
-            style={{ fontSize: '11px', padding: '4px 10px' }}
+            style={{ fontSize: '12px', padding: '6px 12px', minHeight: '34px' }}
           >
             {f.label}
           </button>
@@ -202,7 +202,7 @@ export const ApprovalsView: React.FC = () => {
                   <button
                     onClick={() => openItemDetail(item)}
                     className="btn-secondary"
-                    style={{ fontSize: '11px', padding: '3px 8px' }}
+                    style={{ fontSize: '11px', padding: '4px 8px', minHeight: '30px' }}
                   >
                     Review / Edit
                   </button>
@@ -211,32 +211,46 @@ export const ApprovalsView: React.FC = () => {
             ))}
           </tbody>
         </table>
+        <div className="table-scroll-hint">
+          <span>Swipe for full approval details &rarr;</span>
+        </div>
       </div>
 
       {/* Approval Item Detail Drawer */}
       {activeItem && (
-        <div className="drawer-panel" style={{ width: '560px' }} role="dialog" aria-labelledby="approval-detail-title">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
-            <div>
-              <span className={`badge ${
-                activeItem.status === 'approved'
-                  ? 'badge-evergreen'
-                  : activeItem.status === 'pending'
-                  ? 'badge-ochre'
-                  : activeItem.status === 'rejected'
-                  ? 'badge-terracotta'
-                  : 'badge-neutral'
-              }`} style={{ fontSize: '10px' }}>
-                STATUS: {activeItem.status.toUpperCase().replace('_', ' ')}
-              </span>
-              <h3 id="approval-detail-title" style={{ fontSize: '16px', fontWeight: 600, marginTop: '2px' }}>
-                {activeItem.title}
-              </h3>
+        <>
+          <div
+            className="mobile-backdrop"
+            onClick={() => setActiveItem(null)}
+            aria-hidden="true"
+          />
+          <div className="drawer-panel" style={{ width: '560px', maxWidth: '100vw' }} role="dialog" aria-labelledby="approval-detail-title">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
+              <div>
+                <span className={`badge ${
+                  activeItem.status === 'approved'
+                    ? 'badge-evergreen'
+                    : activeItem.status === 'pending'
+                    ? 'badge-ochre'
+                    : activeItem.status === 'rejected'
+                    ? 'badge-terracotta'
+                    : 'badge-neutral'
+                }`} style={{ fontSize: '10px' }}>
+                  STATUS: {activeItem.status.toUpperCase().replace('_', ' ')}
+                </span>
+                <h3 id="approval-detail-title" style={{ fontSize: '16px', fontWeight: 600, marginTop: '2px' }}>
+                  {activeItem.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setActiveItem(null)}
+                className="btn-ghost"
+                aria-label="Close approval panel"
+                style={{ padding: '8px', minWidth: '40px', minHeight: '40px' }}
+              >
+                <IconClose size={16} />
+              </button>
             </div>
-            <button onClick={() => setActiveItem(null)} className="btn-ghost" aria-label="Close approval panel">
-              <IconClose size={14} />
-            </button>
-          </div>
 
           <div style={{ padding: '20px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* System Rationale & Boundary */}
@@ -352,20 +366,22 @@ export const ApprovalsView: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '10px',
           }}>
             {activeItem.status === 'pending' && (
               <>
                 <button
                   onClick={() => setRejectModalItem(activeItem)}
                   className="btn-danger"
-                  style={{ fontSize: '12px' }}
+                  style={{ fontSize: '12px', minHeight: '40px', padding: '8px 14px' }}
                 >
                   Reject Proposal
                 </button>
                 <button
                   onClick={() => handleApprove(activeItem)}
                   className="btn-primary"
-                  style={{ fontSize: '12px' }}
+                  style={{ fontSize: '12px', minHeight: '40px', padding: '8px 14px' }}
                 >
                   Authorize & Approve Action &rarr;
                 </button>
@@ -376,7 +392,7 @@ export const ApprovalsView: React.FC = () => {
               <button
                 onClick={() => setSimulateModalItem(activeItem)}
                 className="btn-primary"
-                style={{ width: '100%', fontSize: '13px' }}
+                style={{ width: '100%', fontSize: '13px', minHeight: '44px' }}
               >
                 Execute Simulated Email Transmission &rarr;
               </button>
@@ -389,7 +405,8 @@ export const ApprovalsView: React.FC = () => {
             )}
           </div>
         </div>
-      )}
+      </>
+    )}
 
       {/* Confirmation Modal for Simulated Send */}
       {simulateModalItem && (

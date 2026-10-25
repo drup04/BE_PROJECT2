@@ -41,8 +41,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
           <h3 id="modal-title" style={{ fontSize: '16px', fontWeight: 600 }}>{title}</h3>
-          <button onClick={onCancel} className="btn-ghost" aria-label="Close dialog" style={{ padding: '4px' }}>
-            <IconClose size={14} />
+          <button onClick={onCancel} className="btn-ghost" aria-label="Close dialog" style={{ padding: '8px', minWidth: '40px', minHeight: '40px' }}>
+            <IconClose size={16} />
           </button>
         </div>
 
@@ -65,11 +65,11 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           )}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', padding: '14px 20px', borderTop: '1px solid var(--hairline)', backgroundColor: 'var(--surface-alt)' }}>
-          <button onClick={onCancel} className="btn-secondary">
+        <div className="modal-action-footer">
+          <button onClick={onCancel} className="btn-secondary" style={{ minHeight: '40px', padding: '8px 16px' }}>
             {cancelLabel}
           </button>
-          <button onClick={onConfirm} className={isDanger ? 'btn-danger' : 'btn-primary'}>
+          <button onClick={onConfirm} className={isDanger ? 'btn-danger' : 'btn-primary'} style={{ minHeight: '40px', padding: '8px 16px' }}>
             {confirmLabel}
           </button>
         </div>

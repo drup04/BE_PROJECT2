@@ -9,6 +9,8 @@ import {
   IconCustomers,
   IconApprovals,
   IconActivity,
+  IconMenu,
+  IconClose,
 } from '../common/Icons';
 import { ConfirmModal } from '../common/ConfirmModal';
 import { resetAllDemoData } from '../../services/businessData';
@@ -52,6 +54,16 @@ export const AppShell: React.FC<AppShellProps> = ({
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
   const handleResetConfirm = () => {
     resetAllDemoData();
     setIsResetModalOpen(false);
@@ -94,25 +106,55 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   return (
     <div className="app-container">
-      {/* Sidebar Navigation */}
-      <aside className={`app-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+      {/* Mobile Drawer Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="mobile-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar Navigation (Desktop Persistent / Mobile Drawer) */}
+      <aside
+        className={`app-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}
+        aria-label="Sidebar Navigation"
+      >
         {/* Brand Header */}
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              width: '10px',
-              height: '10px',
-              backgroundColor: 'var(--evergreen)',
-              borderRadius: '2px',
-            }} />
-            <h1 style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-              {BRAND_CONFIG.productName}
-            </h1>
+        <div style={{
+          padding: '16px 20px',
+          borderBottom: '1px solid var(--hairline)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{
+                display: 'inline-block',
+                width: '10px',
+                height: '10px',
+                backgroundColor: 'var(--evergreen)',
+                borderRadius: '2px',
+              }} />
+              <h1 style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
+                {BRAND_CONFIG.productName}
+              </h1>
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Operations Dispatch
+            </div>
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            Operations Dispatch
-          </div>
+
+          {/* Close button inside mobile drawer */}
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="btn-ghost mobile-only"
+            aria-label="Close navigation menu"
+            style={{ padding: '6px 8px', minWidth: '40px', minHeight: '40px' }}
+          >
+            <IconClose size={16} />
+          </button>
         </div>
 
         {/* Active Entity Workspace */}
@@ -149,7 +191,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '8px 12px',
+                      padding: '10px 12px',
                       borderRadius: 'var(--radius-sm)',
                       backgroundColor: isActive ? 'var(--canvas)' : 'transparent',
                       color: isActive ? 'var(--evergreen-ink)' : 'var(--ink-secondary)',
@@ -197,16 +239,22 @@ export const AppShell: React.FC<AppShellProps> = ({
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px' }}>
             <button
-              onClick={() => onRouteChange('/settings/privacy')}
+              onClick={() => {
+                onRouteChange('/settings/privacy');
+                setMobileMenuOpen(false);
+              }}
               className="btn-ghost"
-              style={{ padding: '2px 4px', fontSize: '11px' }}
+              style={{ padding: '4px 6px', fontSize: '11px' }}
             >
               Privacy & Demo Info
             </button>
             <button
-              onClick={() => onRouteChange('/terms')}
+              onClick={() => {
+                onRouteChange('/terms');
+                setMobileMenuOpen(false);
+              }}
               className="btn-ghost"
-              style={{ padding: '2px 4px', fontSize: '11px' }}
+              style={{ padding: '4px 6px', fontSize: '11px' }}
             >
               Terms
             </button>
@@ -221,40 +269,50 @@ export const AppShell: React.FC<AppShellProps> = ({
       <div className="app-main">
         {/* Top Header Bar */}
         <header className="app-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: '1 1 auto', minWidth: 0 }}>
             {/* Mobile menu toggle */}
             <button
-              className="btn-secondary"
+              className="btn-secondary mobile-only-flex"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{ display: 'none', padding: '4px 8px' }}
+              style={{ padding: '6px 10px', alignItems: 'center', gap: '6px', minHeight: '38px', flexShrink: 0 }}
               aria-label="Toggle navigation menu"
             >
-              Menu
+              <IconMenu size={16} />
+              <span style={{ fontSize: '12px', fontWeight: 600 }}>Menu</span>
+              {pendingApprovalCount > 0 && (
+                <span className="badge badge-ochre" style={{ fontSize: '10px', padding: '0 4px', minWidth: '16px' }}>
+                  {pendingApprovalCount}
+                </span>
+              )}
             </button>
-            <div>
-              <div style={{ fontSize: '11px', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+
+            <div style={{ minWidth: 0, overflow: 'hidden' }}>
+              <div style={{ fontSize: '11px', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 KaryaDesk / {BRAND_CONFIG.companyName}
               </div>
-              <h2 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink)' }}>
+              <h2 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {getPageTitle(currentRoute)}
               </h2>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            {/* Always visible Demo Workspace Indicator */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '3px 10px',
-              backgroundColor: 'var(--surface-alt)',
-              border: '1px solid var(--hairline)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '11px',
-              color: 'var(--muted)',
-              fontWeight: 500,
-            }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            {/* Always visible Demo Workspace Indicator (Desktop) */}
+            <div
+              className="desktop-only"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '3px 10px',
+                backgroundColor: 'var(--surface-alt)',
+                border: '1px solid var(--hairline)',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '11px',
+                color: 'var(--muted)',
+                fontWeight: 500,
+              }}
+            >
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--ochre)' }} />
               {BRAND_CONFIG.demoLabel}
             </div>
@@ -263,25 +321,26 @@ export const AppShell: React.FC<AppShellProps> = ({
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              padding: '3px 9px',
+              padding: '4px 8px',
               backgroundColor: 'var(--surface)',
               border: '1px solid var(--hairline-strong)',
               borderRadius: 'var(--radius-sm)',
-              fontSize: '12px',
+              fontSize: '11px',
               color: 'var(--ink)',
               fontWeight: 500,
+              whiteSpace: 'nowrap',
             }}>
-              Period: {BRAND_CONFIG.reportingPeriod.current}
+              {BRAND_CONFIG.reportingPeriod.current}
             </div>
 
             {/* Reset Demo Data Button */}
             <button
               onClick={() => setIsResetModalOpen(true)}
               className="btn-secondary"
-              style={{ fontSize: '12px', padding: '5px 10px' }}
+              style={{ fontSize: '11px', padding: '5px 9px', minHeight: '32px' }}
               title="Reset all demo records back to clean synthetic seed state"
             >
-              Reset Demo
+              Reset
             </button>
           </div>
         </header>
@@ -291,6 +350,59 @@ export const AppShell: React.FC<AppShellProps> = ({
           {children}
         </main>
       </div>
+
+      {/* Mobile Bottom Thumb Navigation */}
+      <nav className="mobile-bottom-nav" aria-label="Mobile quick navigation">
+        <button
+          className={`mobile-bottom-nav-item ${currentRoute === '/overview' ? 'active' : ''}`}
+          onClick={() => onRouteChange('/overview')}
+          aria-label="Business Overview"
+        >
+          <IconOverview size={17} />
+          <span>Overview</span>
+        </button>
+
+        <button
+          className={`mobile-bottom-nav-item ${currentRoute === '/assistant' ? 'active' : ''}`}
+          onClick={() => onRouteChange('/assistant')}
+          aria-label="Operations Assistant"
+        >
+          <IconAssistant size={17} />
+          <span>Assistant</span>
+        </button>
+
+        <button
+          className={`mobile-bottom-nav-item ${currentRoute === '/approvals' ? 'active' : ''}`}
+          onClick={() => onRouteChange('/approvals')}
+          aria-label="Approvals Queue"
+        >
+          <IconApprovals size={17} />
+          <span>Approvals</span>
+          {pendingApprovalCount > 0 && (
+            <span className="mobile-nav-badge badge-ochre">
+              {pendingApprovalCount}
+            </span>
+          )}
+        </button>
+
+        <button
+          className={`mobile-bottom-nav-item ${currentRoute === '/receivables' ? 'active' : ''}`}
+          onClick={() => onRouteChange('/receivables')}
+          aria-label="Receivables"
+        >
+          <IconReceivables size={17} />
+          <span>Receivables</span>
+        </button>
+
+        <button
+          className={`mobile-bottom-nav-item ${mobileMenuOpen ? 'active' : ''}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Open Full Navigation Menu"
+        >
+          <IconMenu size={17} />
+          <span>Menu</span>
+        </button>
+      </nav>
 
       {/* Demo Reset Confirmation Modal */}
       <ConfirmModal

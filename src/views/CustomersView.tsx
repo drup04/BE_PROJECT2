@@ -51,17 +51,17 @@ export const CustomersView: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <div style={{ position: 'relative', width: '240px' }}>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', width: 'auto', flex: '1 1 auto', justifyContent: 'flex-end' }}>
+          <div style={{ position: 'relative', width: '260px', maxWidth: '100%' }}>
             <input
               type="text"
               placeholder="Search company, contact, city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="input-text"
-              style={{ fontSize: '12px', paddingLeft: '28px', height: '34px' }}
+              style={{ fontSize: '12px', paddingLeft: '28px', height: '36px' }}
             />
-            <span style={{ position: 'absolute', left: '8px', top: '10px', color: 'var(--muted)' }}>
+            <span style={{ position: 'absolute', left: '8px', top: '11px', color: 'var(--muted)' }}>
               <IconSearch size={13} />
             </span>
           </div>
@@ -69,7 +69,7 @@ export const CustomersView: React.FC = () => {
       </div>
 
       {/* Status Filter Tabs */}
-      <div style={{ display: 'flex', gap: '6px' }}>
+      <div className="filter-tab-bar">
         {[
           { id: 'all', label: `All Accounts (${customers.length})` },
           { id: 'active', label: 'Active Standard Terms' },
@@ -79,7 +79,7 @@ export const CustomersView: React.FC = () => {
             key={f.id}
             onClick={() => setStatusFilter(f.id as any)}
             className={statusFilter === f.id ? 'btn-primary' : 'btn-secondary'}
-            style={{ fontSize: '11px', padding: '4px 10px' }}
+            style={{ fontSize: '12px', padding: '6px 12px', minHeight: '34px' }}
           >
             {f.label}
           </button>
@@ -126,7 +126,7 @@ export const CustomersView: React.FC = () => {
                   <button
                     onClick={() => setActiveCustomer(cust)}
                     className="btn-secondary"
-                    style={{ fontSize: '11px', padding: '3px 8px' }}
+                    style={{ fontSize: '11px', padding: '4px 8px', minHeight: '30px' }}
                   >
                     View Account
                   </button>
@@ -135,24 +135,38 @@ export const CustomersView: React.FC = () => {
             ))}
           </tbody>
         </table>
+        <div className="table-scroll-hint">
+          <span>Swipe for full customer directory &rarr;</span>
+        </div>
       </div>
 
       {/* Customer Detail Drawer */}
       {activeCustomer && (
-        <div className="drawer-panel" role="dialog" aria-labelledby="cust-detail-title">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
-            <div>
-              <span className={`badge ${activeCustomer.status === 'watch' ? 'badge-terracotta' : 'badge-evergreen'}`} style={{ fontSize: '10px' }}>
-                {activeCustomer.status.toUpperCase()} ACCOUNT
-              </span>
-              <h3 id="cust-detail-title" style={{ fontSize: '16px', fontWeight: 600, marginTop: '2px' }}>
-                {activeCustomer.companyName}
-              </h3>
+        <>
+          <div
+            className="mobile-backdrop"
+            onClick={() => setActiveCustomer(null)}
+            aria-hidden="true"
+          />
+          <div className="drawer-panel" role="dialog" aria-labelledby="cust-detail-title">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
+              <div>
+                <span className={`badge ${activeCustomer.status === 'watch' ? 'badge-terracotta' : 'badge-evergreen'}`} style={{ fontSize: '10px' }}>
+                  {activeCustomer.status.toUpperCase()} ACCOUNT
+                </span>
+                <h3 id="cust-detail-title" style={{ fontSize: '16px', fontWeight: 600, marginTop: '2px' }}>
+                  {activeCustomer.companyName}
+                </h3>
+              </div>
+              <button
+                onClick={() => setActiveCustomer(null)}
+                className="btn-ghost"
+                aria-label="Close customer panel"
+                style={{ padding: '8px', minWidth: '40px', minHeight: '40px' }}
+              >
+                <IconClose size={16} />
+              </button>
             </div>
-            <button onClick={() => setActiveCustomer(null)} className="btn-ghost" aria-label="Close customer panel">
-              <IconClose size={14} />
-            </button>
-          </div>
 
           <div style={{ padding: '20px', flex: 1, overflowY: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
@@ -237,7 +251,8 @@ export const CustomersView: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
+      </>
+    )}
     </div>
   );
 };

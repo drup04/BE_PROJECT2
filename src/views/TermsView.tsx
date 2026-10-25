@@ -9,7 +9,7 @@ export const TermsView: React.FC = () => {
       backgroundColor: 'var(--surface)',
       border: '1px solid var(--hairline)',
       borderRadius: 'var(--radius-sm)',
-      padding: '32px',
+      padding: 'clamp(16px, 4vw, 32px)',
       display: 'flex',
       flexDirection: 'column',
       gap: '20px',
@@ -18,7 +18,7 @@ export const TermsView: React.FC = () => {
         <span className="badge badge-neutral" style={{ marginBottom: '8px' }}>
           Educational Prototype Terms
         </span>
-        <h2 className="display-serif" style={{ fontSize: '26px', fontWeight: 600 }}>
+        <h2 className="display-serif" style={{ fontSize: '24px', fontWeight: 600 }}>
           Terms of Prototype Demonstration
         </h2>
         <p style={{ color: 'var(--muted)', fontSize: '13px', marginTop: '4px' }}>

@@ -132,10 +132,11 @@ The palette is rooted in industrial manufacturing materials: machined alloy stee
 
 ## Layout
 
-- **Persistent Left Navigation Rail:** 250px fixed sidebar on desktop, housing the wordmark, entity indicator, primary routes, and approval queue counts. Collapses gracefully on smaller tablet/mobile viewports.
-- **Top Utility Header:** Contains active breadcrumbs, the always-visible `Demo workspace • Sample data` badge, period indicator, and demo reset controls.
-- **Metric Summary Strip:** 4 aligned measures separated by 1px hairlines across a single unified container, explicitly refusing separated floating cards.
-- **Responsive Geometry:** Desktop width tested at 1440px and 1024px; mobile width tested at 390px with horizontal scrolling wrappers for tabular registers.
+- **Persistent Left Navigation Rail:** 250px fixed sidebar on desktop, housing the wordmark, entity indicator, primary routes, and approval queue counts. Transitions to an off-canvas drawer with semi-transparent backdrop overlay on mobile/tablet viewports (< 900px).
+- **Mobile Bottom Thumb Navigation Bar:** Fixed at the bottom of the viewport on mobile devices (< 900px), providing one-thumb shop-floor access to the 5 core surfaces: Overview, Assistant, Approvals (with dynamic count badge), Receivables, and More/Menu drawer.
+- **Top Utility Header:** Contains active breadcrumbs, the always-visible `Demo workspace • Sample data` badge, period indicator, and demo reset controls. Compacts gracefully into a responsive header with mobile hamburger button on narrow viewports.
+- **Metric Summary Strip:** 4 aligned measures separated by 1px hairlines across a single unified container, explicitly refusing separated floating cards. On mobile viewports (<= 640px), adapts into a high-density 2x2 hairline grid so all 4 core business indicators remain visible in a single glance without endless vertical scrolling.
+- **Responsive Geometry & Touch Ergonomics:** Tested at 1440px desktop, 1024px tablet, and 390px/360px mobile viewports. Interactive controls enforce minimum 44px tap targets, form inputs maintain 16px font sizes to prevent iOS Safari auto-zoom, and tables include horizontal touch-scrolling affordances (`.table-scroll-hint`). Full-width slide-out drawers and bottom-sheet modals provide focused ergonomics on handheld devices.
 
 ## Elevation & Depth
 

@@ -167,7 +167,7 @@ export const QuotationsView: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+      <div className="filter-tab-bar">
         {[
           { id: 'all', label: 'All Quotations' },
           { id: 'draft', label: 'Draft' },
@@ -179,7 +179,7 @@ export const QuotationsView: React.FC = () => {
             key={f.id}
             onClick={() => setStatusFilter(f.id as any)}
             className={statusFilter === f.id ? 'btn-primary' : 'btn-secondary'}
-            style={{ fontSize: '11px', padding: '4px 10px' }}
+            style={{ fontSize: '12px', padding: '6px 12px', minHeight: '34px' }}
           >
             {f.label}
           </button>
@@ -231,7 +231,7 @@ export const QuotationsView: React.FC = () => {
                   <button
                     onClick={() => setPreviewQuote(q)}
                     className="btn-secondary"
-                    style={{ fontSize: '11px', padding: '3px 8px' }}
+                    style={{ fontSize: '11px', padding: '4px 8px' }}
                   >
                     Preview
                   </button>
@@ -240,6 +240,9 @@ export const QuotationsView: React.FC = () => {
             ))}
           </tbody>
         </table>
+        <div className="table-scroll-hint">
+          <span>Swipe for full quotation register &rarr;</span>
+        </div>
       </div>
 
       {/* New Quotation Creation Modal */}
@@ -275,7 +278,7 @@ export const QuotationsView: React.FC = () => {
               )}
 
               {/* Customer & Validity row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '12px' }}>
+              <div className="quote-header-fields">
                 <div>
                   <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', marginBottom: '4px' }}>
                     Customer Account *
@@ -328,7 +331,7 @@ export const QuotationsView: React.FC = () => {
                   <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase' }}>
                     Component Line Items
                   </label>
-                  <button onClick={handleAddLine} className="btn-secondary" style={{ fontSize: '11px', padding: '2px 8px' }}>
+                  <button onClick={handleAddLine} className="btn-secondary" style={{ fontSize: '11px', padding: '4px 10px', minHeight: '32px' }}>
                     + Add Item
                   </button>
                 </div>
@@ -337,23 +340,14 @@ export const QuotationsView: React.FC = () => {
                   {formLines.map((line, idx) => (
                     <div
                       key={idx}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '3fr 1fr 1fr 1fr auto',
-                        gap: '8px',
-                        alignItems: 'center',
-                        padding: '8px 10px',
-                        backgroundColor: 'var(--canvas)',
-                        border: '1px solid var(--hairline)',
-                        borderRadius: 'var(--radius-sm)',
-                      }}
+                      className="quote-line-card"
                     >
                       <div>
                         <select
                           value={line.productId}
                           onChange={(e) => handleProductChange(idx, e.target.value)}
                           className="select-field"
-                          style={{ fontSize: '12px' }}
+                          style={{ fontSize: '13px' }}
                         >
                           {products.map((p) => (
                             <option key={p.id} value={p.id}>
@@ -363,44 +357,49 @@ export const QuotationsView: React.FC = () => {
                         </select>
                       </div>
 
-                      <div>
-                        <input
-                          type="number"
-                          min="1"
-                          value={line.quantity}
-                          onChange={(e) => handleQtyChange(idx, Number(e.target.value))}
-                          placeholder="Qty"
-                          className="input-text"
-                          style={{ fontSize: '12px' }}
-                        />
-                      </div>
+                      <div className="quote-line-card-subrow">
+                        <div>
+                          <input
+                            type="number"
+                            min="1"
+                            value={line.quantity}
+                            onChange={(e) => handleQtyChange(idx, Number(e.target.value))}
+                            placeholder="Qty"
+                            className="input-text"
+                            style={{ fontSize: '13px' }}
+                            title="Quantity"
+                          />
+                        </div>
 
-                      <div>
-                        <input
-                          type="number"
-                          min="0"
-                          value={line.unitPrice}
-                          onChange={(e) => handlePriceChange(idx, Number(e.target.value))}
-                          placeholder="Unit Price"
-                          className="input-text"
-                          style={{ fontSize: '12px' }}
-                        />
-                      </div>
+                        <div>
+                          <input
+                            type="number"
+                            min="0"
+                            value={line.unitPrice}
+                            onChange={(e) => handlePriceChange(idx, Number(e.target.value))}
+                            placeholder="Unit Price"
+                            className="input-text"
+                            style={{ fontSize: '13px' }}
+                            title="Unit Price"
+                          />
+                        </div>
 
-                      <div className="num" style={{ fontWeight: 600, fontSize: '12px', textAlign: 'right' }}>
-                        {formatRupees(line.quantity * line.unitPrice)}
-                      </div>
+                        <div className="num" style={{ fontWeight: 600, fontSize: '12px', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                          {formatRupees(line.quantity * line.unitPrice)}
+                        </div>
 
-                      <div>
-                        <button
-                          onClick={() => handleRemoveLine(idx)}
-                          disabled={formLines.length === 1}
-                          className="btn-ghost"
-                          style={{ color: 'var(--terracotta)', padding: '4px' }}
-                          title="Remove line"
-                        >
-                          &times;
-                        </button>
+                        <div>
+                          <button
+                            onClick={() => handleRemoveLine(idx)}
+                            disabled={formLines.length === 1}
+                            className="btn-ghost"
+                            style={{ color: 'var(--terracotta)', padding: '6px 8px', minWidth: '36px', minHeight: '36px' }}
+                            title="Remove line"
+                            aria-label={`Remove line item ${idx + 1}`}
+                          >
+                            &times;
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -408,7 +407,7 @@ export const QuotationsView: React.FC = () => {
               </div>
 
               {/* Discount and Summary Calculations */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', alignItems: 'flex-start' }}>
+              <div className="quote-summary-split">
                 <div>
                   <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', marginBottom: '4px' }}>
                     Special Discount (%)
@@ -432,7 +431,7 @@ export const QuotationsView: React.FC = () => {
                       onChange={(e) => setNotes(e.target.value)}
                       className="textarea-field"
                       rows={2}
-                      style={{ fontSize: '12px' }}
+                      style={{ fontSize: '13px' }}
                     />
                   </div>
                 </div>
@@ -486,7 +485,7 @@ export const QuotationsView: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', padding: '14px 20px', borderTop: '1px solid var(--hairline)', backgroundColor: 'var(--surface-alt)' }}>
+            <div className="modal-action-footer">
               <button onClick={() => setIsFormOpen(false)} className="btn-secondary">
                 Cancel
               </button>
@@ -515,25 +514,25 @@ export const QuotationsView: React.FC = () => {
                 </h3>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button onClick={() => window.print()} className="btn-secondary" style={{ fontSize: '12px' }}>
+                <button onClick={() => window.print()} className="btn-secondary" style={{ fontSize: '12px', minHeight: '36px' }}>
                   Print Quote
                 </button>
-                <button onClick={() => setPreviewQuote(null)} className="btn-ghost" aria-label="Close preview">
-                  <IconClose size={14} />
+                <button onClick={() => setPreviewQuote(null)} className="btn-ghost" aria-label="Close preview" style={{ padding: '8px', minWidth: '40px', minHeight: '40px' }}>
+                  <IconClose size={16} />
                 </button>
               </div>
             </div>
 
             {/* Printable Document Body */}
-            <div style={{ padding: '30px', color: '#111111', fontSize: '13px', lineHeight: 1.5 }}>
+            <div style={{ padding: 'clamp(14px, 4vw, 30px)', color: '#111111', fontSize: '13px', lineHeight: 1.5 }}>
               {/* Header Letterhead */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #222222', paddingBottom: '16px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', borderBottom: '2px solid #222222', paddingBottom: '16px', marginBottom: '20px' }}>
                 <div>
                   <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#111111' }}>{BRAND_CONFIG.companyName}</h2>
                   <div style={{ fontSize: '12px', color: '#555555' }}>{BRAND_CONFIG.location}</div>
                   <div style={{ fontSize: '12px', color: '#555555' }}>GSTIN: 27AABCS9821R1Z3</div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
+                <div style={{ textAlign: 'left' }}>
                   <div style={{ fontSize: '16px', fontWeight: 700 }}>QUOTATION</div>
                   <div style={{ fontSize: '12px', color: '#555555' }}>Quote #: <strong>{previewQuote.quoteNumber}</strong></div>
                   <div style={{ fontSize: '12px', color: '#555555' }}>Date: {previewQuote.createdDate}</div>
@@ -548,32 +547,37 @@ export const QuotationsView: React.FC = () => {
               </div>
 
               {/* Table of items */}
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #CCCCCC', backgroundColor: '#F5F5F5' }}>
-                    <th style={{ padding: '8px', textAlign: 'left', fontSize: '11px' }}>#</th>
-                    <th style={{ padding: '8px', textAlign: 'left', fontSize: '11px' }}>Item Description</th>
-                    <th style={{ padding: '8px', textAlign: 'right', fontSize: '11px' }}>Qty</th>
-                    <th style={{ padding: '8px', textAlign: 'right', fontSize: '11px' }}>Unit Rate (₹)</th>
-                    <th style={{ padding: '8px', textAlign: 'right', fontSize: '11px' }}>Amount (₹)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {previewQuote.lines.map((l, i) => (
-                    <tr key={l.id} style={{ borderBottom: '1px solid #EEEEEE' }}>
-                      <td style={{ padding: '8px' }}>{i + 1}</td>
-                      <td style={{ padding: '8px', fontWeight: 500 }}>{l.description}</td>
-                      <td style={{ padding: '8px', textAlign: 'right' }}>{l.quantity}</td>
-                      <td style={{ padding: '8px', textAlign: 'right' }}>{formatRupees(l.unitPrice)}</td>
-                      <td style={{ padding: '8px', textAlign: 'right', fontWeight: 600 }}>{formatRupees(l.amount)}</td>
+              <div className="data-table-container" style={{ marginBottom: '20px' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid #CCCCCC', backgroundColor: '#F5F5F5' }}>
+                      <th style={{ padding: '8px', textAlign: 'left', fontSize: '11px' }}>#</th>
+                      <th style={{ padding: '8px', textAlign: 'left', fontSize: '11px' }}>Item Description</th>
+                      <th style={{ padding: '8px', textAlign: 'right', fontSize: '11px' }}>Qty</th>
+                      <th style={{ padding: '8px', textAlign: 'right', fontSize: '11px' }}>Unit Rate (₹)</th>
+                      <th style={{ padding: '8px', textAlign: 'right', fontSize: '11px' }}>Amount (₹)</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {previewQuote.lines.map((l, i) => (
+                      <tr key={l.id} style={{ borderBottom: '1px solid #EEEEEE' }}>
+                        <td style={{ padding: '8px' }}>{i + 1}</td>
+                        <td style={{ padding: '8px', fontWeight: 500 }}>{l.description}</td>
+                        <td style={{ padding: '8px', textAlign: 'right' }}>{l.quantity}</td>
+                        <td style={{ padding: '8px', textAlign: 'right' }}>{formatRupees(l.unitPrice)}</td>
+                        <td style={{ padding: '8px', textAlign: 'right', fontWeight: 600 }}>{formatRupees(l.amount)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="table-scroll-hint">
+                  <span>Swipe for full line items &rarr;</span>
+                </div>
+              </div>
 
               {/* Totals Section */}
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                <div style={{ width: '260px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#666666' }}>Subtotal:</span>
                     <span style={{ fontWeight: 600 }}>{formatRupees(previewQuote.subtotal)}</span>

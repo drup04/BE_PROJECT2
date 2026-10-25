@@ -144,7 +144,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
               runTask(inputText.trim());
             }
           }}
-          style={{ display: 'flex', gap: '10px' }}
+          className="assistant-input-form"
         >
           <div style={{ position: 'relative', flex: 1 }}>
             <input
@@ -153,10 +153,10 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
               onChange={(e) => setInputText(e.target.value)}
               placeholder="e.g. Why did our profit fall this month?"
               className="input-text"
-              style={{ paddingLeft: '32px', height: '40px', fontSize: '14px' }}
+              style={{ paddingLeft: '32px', height: '42px', fontSize: '14px' }}
               disabled={isRunning}
             />
-            <span style={{ position: 'absolute', left: '10px', top: '13px', color: 'var(--muted)' }}>
+            <span style={{ position: 'absolute', left: '10px', top: '14px', color: 'var(--muted)' }}>
               <IconSearch size={15} />
             </span>
           </div>
@@ -164,7 +164,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
           <button
             type="submit"
             className="btn-primary"
-            style={{ height: '40px', padding: '0 20px', fontSize: '14px' }}
+            style={{ height: '42px', padding: '0 20px', fontSize: '13px', whiteSpace: 'nowrap', flexShrink: 0 }}
             disabled={isRunning || !inputText.trim()}
           >
             {isRunning ? 'Verifying Records...' : 'Execute Task'}
@@ -172,7 +172,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
         </form>
 
         {/* Quick Sample Prompts */}
-        <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+        <div style={{ marginTop: '14px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '11px', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Quick Prompts:
           </span>
@@ -186,7 +186,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
               }}
               disabled={isRunning}
               className="btn-secondary"
-              style={{ fontSize: '11px', padding: '3px 8px' }}
+              style={{ fontSize: '12px', padding: '6px 10px', minHeight: '34px' }}
             >
               {prompt}
             </button>
@@ -411,6 +411,9 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
                     ))}
                   </tbody>
                 </table>
+                <div className="table-scroll-hint">
+                  <span>Swipe for full margin breakdown &rarr;</span>
+                </div>
               </div>
             </div>
           </div>
@@ -467,7 +470,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
                       <td className="num" style={{ fontWeight: 600 }}>{formatRupees(ev.amount)}</td>
                       <td style={{ fontSize: '12px', color: 'var(--muted)' }}>{ev.note}</td>
                       <td>
-                        <button className="btn-secondary" style={{ fontSize: '11px', padding: '2px 8px' }}>
+                        <button className="btn-secondary" style={{ fontSize: '11px', padding: '4px 8px' }}>
                           Inspect
                         </button>
                       </td>
@@ -475,6 +478,9 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
                   ))}
                 </tbody>
               </table>
+              <div className="table-scroll-hint">
+                <span>Swipe for full evidence trace &rarr;</span>
+              </div>
             </div>
           </div>
 
@@ -499,11 +505,11 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '10px', width: '100%', maxWidth: '380px' }}>
                   <button
                     onClick={handleQueueDrafts}
                     className="btn-primary"
-                    style={{ padding: '8px 16px', fontSize: '13px' }}
+                    style={{ padding: '10px 16px', fontSize: '13px', width: '100%', minHeight: '44px' }}
                   >
                     Draft 3 Follow-up Emails & Open Review &rarr;
                   </button>
@@ -514,7 +520,7 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
               <div style={{
                 marginTop: '16px',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
                 gap: '12px',
               }}>
                 {currentTaskRun.proposedAction.drafts.map((d) => (
@@ -557,20 +563,31 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
 
       {/* Sourced Evidence Detail Drawer */}
       {selectedEvidence && (
-        <div className="drawer-panel" role="dialog" aria-labelledby="evidence-detail-title">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
-            <div>
-              <span className="badge badge-neutral" style={{ fontSize: '10px', marginBottom: '2px' }}>
-                {selectedEvidence.type.toUpperCase()} EVIDENCE
-              </span>
-              <h3 id="evidence-detail-title" style={{ fontSize: '16px', fontWeight: 600 }}>
-                {selectedEvidence.referenceNumber}
-              </h3>
+        <>
+          <div
+            className="mobile-backdrop"
+            onClick={() => setSelectedEvidence(null)}
+            aria-hidden="true"
+          />
+          <div className="drawer-panel" role="dialog" aria-labelledby="evidence-detail-title">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
+              <div>
+                <span className="badge badge-neutral" style={{ fontSize: '10px', marginBottom: '2px' }}>
+                  {selectedEvidence.type.toUpperCase()} EVIDENCE
+                </span>
+                <h3 id="evidence-detail-title" style={{ fontSize: '16px', fontWeight: 600 }}>
+                  {selectedEvidence.referenceNumber}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedEvidence(null)}
+                className="btn-ghost"
+                aria-label="Close evidence panel"
+                style={{ padding: '8px', minWidth: '40px', minHeight: '40px' }}
+              >
+                <IconClose size={16} />
+              </button>
             </div>
-            <button onClick={() => setSelectedEvidence(null)} className="btn-ghost" aria-label="Close evidence panel">
-              <IconClose size={14} />
-            </button>
-          </div>
 
           <div style={{ padding: '20px', flex: 1, overflowY: 'auto' }}>
             <div style={{ marginBottom: '16px' }}>
@@ -629,7 +646,8 @@ export const AssistantView: React.FC<AssistantViewProps> = ({
             </button>
           </div>
         </div>
-      )}
+      </>
+    )}
     </div>
   );
 };
