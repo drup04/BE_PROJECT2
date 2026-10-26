@@ -103,7 +103,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
           <button
             onClick={handleCreateDraftsFromSelected}
             className="btn-primary"
-            style={{ padding: '10px 16px', fontSize: '13px', minHeight: '44px' }}
+            style={{ padding: '8px 16px', fontSize: '13px' }}
           >
             Create {selectedInvoiceIds.length} Follow-up Draft(s) & Send to Approvals &rarr;
           </button>
@@ -186,7 +186,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
           gap: '12px',
         }}>
           {/* Status Tabs */}
-          <div className="filter-tab-bar">
+          <div style={{ display: 'flex', gap: '6px' }}>
             {[
               { id: 'all', label: `All (${invoices.length})` },
               { id: 'overdue', label: `Overdue (${overdueInvoices.length})` },
@@ -197,7 +197,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
                 key={f.id}
                 onClick={() => setStatusFilter(f.id as any)}
                 className={statusFilter === f.id ? 'btn-primary' : 'btn-secondary'}
-                style={{ fontSize: '12px', padding: '6px 12px', minHeight: '34px' }}
+                style={{ fontSize: '11px', padding: '4px 10px' }}
               >
                 {f.label}
               </button>
@@ -205,17 +205,17 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
           </div>
 
           {/* Search bar & Select All Overdue */}
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', width: 'auto' }}>
-            <div style={{ position: 'relative', width: '220px', minWidth: '180px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <div style={{ position: 'relative', width: '220px' }}>
               <input
                 type="text"
                 placeholder="Search invoice or customer..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="input-text"
-                style={{ fontSize: '12px', paddingLeft: '28px', height: '36px' }}
+                style={{ fontSize: '12px', paddingLeft: '28px', height: '32px' }}
               />
-              <span style={{ position: 'absolute', left: '8px', top: '11px', color: 'var(--muted)' }}>
+              <span style={{ position: 'absolute', left: '8px', top: '9px', color: 'var(--muted)' }}>
                 <IconSearch size={13} />
               </span>
             </div>
@@ -223,7 +223,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
             <button
               onClick={handleSelectAllOverdue}
               className="btn-secondary"
-              style={{ fontSize: '11px', padding: '6px 12px', minHeight: '36px' }}
+              style={{ fontSize: '11px', padding: '6px 10px' }}
             >
               {selectedInvoiceIds.length === overdueInvoices.length ? 'Deselect Overdue' : 'Select All Overdue'}
             </button>
@@ -235,7 +235,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
           <table className="data-table">
             <thead>
               <tr>
-                <th style={{ width: '44px', textAlign: 'center' }}>Select</th>
+                <th style={{ width: '36px' }}>Select</th>
                 <th>Invoice #</th>
                 <th>Customer</th>
                 <th>Invoice Date</th>
@@ -258,17 +258,14 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
                       backgroundColor: isSelected ? 'var(--ochre-subtle)' : isOverdue ? 'var(--terracotta-subtle)' : 'transparent',
                     }}
                   >
-                    <td style={{ textAlign: 'center', padding: '4px' }}>
-                      <label style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: '36px', minHeight: '36px', cursor: 'pointer' }}>
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => handleToggleSelect(inv.id)}
-                          disabled={inv.status === 'paid'}
-                          aria-label={`Select invoice ${inv.invoiceNumber}`}
-                          style={{ width: '16px', height: '16px', cursor: 'pointer' }}
-                        />
-                      </label>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => handleToggleSelect(inv.id)}
+                        disabled={inv.status === 'paid'}
+                        aria-label={`Select invoice ${inv.invoiceNumber}`}
+                      />
                     </td>
                     <td style={{ fontWeight: 600, color: 'var(--ink)' }}>{inv.invoiceNumber}</td>
                     <td style={{ fontWeight: 600 }}>{inv.customerName}</td>
@@ -297,7 +294,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
                       <button
                         onClick={() => setActiveInvoiceDetail(inv)}
                         className="btn-secondary"
-                        style={{ fontSize: '11px', padding: '4px 8px', minHeight: '30px' }}
+                        style={{ fontSize: '11px', padding: '2px 8px' }}
                       >
                         Inspect
                       </button>
@@ -307,39 +304,25 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
               })}
             </tbody>
           </table>
-          <div className="table-scroll-hint">
-            <span>Swipe for full receivables columns &rarr;</span>
-          </div>
         </div>
       </div>
 
       {/* Invoice Detail Drawer */}
       {activeInvoiceDetail && (
-        <>
-          <div
-            className="mobile-backdrop"
-            onClick={() => setActiveInvoiceDetail(null)}
-            aria-hidden="true"
-          />
-          <div className="drawer-panel" role="dialog" aria-labelledby="inv-detail-title">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
-              <div>
-                <span className={`badge ${activeInvoiceDetail.status === 'overdue' ? 'badge-terracotta' : 'badge-evergreen'}`} style={{ fontSize: '10px' }}>
-                  {activeInvoiceDetail.status.toUpperCase()}
-                </span>
-                <h3 id="inv-detail-title" style={{ fontSize: '16px', fontWeight: 600, marginTop: '2px' }}>
-                  {activeInvoiceDetail.invoiceNumber}
-                </h3>
-              </div>
-              <button
-                onClick={() => setActiveInvoiceDetail(null)}
-                className="btn-ghost"
-                aria-label="Close invoice panel"
-                style={{ padding: '8px', minWidth: '40px', minHeight: '40px' }}
-              >
-                <IconClose size={16} />
-              </button>
+        <div className="drawer-panel" role="dialog" aria-labelledby="inv-detail-title">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--hairline)' }}>
+            <div>
+              <span className={`badge ${activeInvoiceDetail.status === 'overdue' ? 'badge-terracotta' : 'badge-evergreen'}`} style={{ fontSize: '10px' }}>
+                {activeInvoiceDetail.status.toUpperCase()}
+              </span>
+              <h3 id="inv-detail-title" style={{ fontSize: '16px', fontWeight: 600, marginTop: '2px' }}>
+                {activeInvoiceDetail.invoiceNumber}
+              </h3>
             </div>
+            <button onClick={() => setActiveInvoiceDetail(null)} className="btn-ghost" aria-label="Close invoice panel">
+              <IconClose size={14} />
+            </button>
+          </div>
 
           <div style={{ padding: '20px', flex: 1, overflowY: 'auto' }}>
             <div style={{ marginBottom: '16px' }}>
@@ -414,8 +397,7 @@ export const ReceivablesView: React.FC<ReceivablesViewProps> = ({ onNavigate }) 
             )}
           </div>
         </div>
-      </>
-    )}
+      )}
     </div>
   );
 };

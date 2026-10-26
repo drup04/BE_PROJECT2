@@ -94,11 +94,3 @@ export const IconAlert: React.FC<IconProps> = ({ size = 14 }) => (
     <circle cx="8" cy="11.5" r="0.5" fill="currentColor" />
   </svg>
 );
-
-export const IconMenu: React.FC<IconProps> = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
-    <line x1="2.5" y1="4" x2="13.5" y2="4" />
-    <line x1="2.5" y1="8" x2="13.5" y2="8" />
-    <line x1="2.5" y1="12" x2="13.5" y2="12" />
-  </svg>
-);

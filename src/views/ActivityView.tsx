@@ -39,25 +39,23 @@ export const ActivityView: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', width: 'auto', flex: '1 1 auto', justifyContent: 'flex-end' }}>
-          <div style={{ position: 'relative', width: '260px', maxWidth: '100%' }}>
-            <input
-              type="text"
-              placeholder="Search audit trail..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-text"
-              style={{ fontSize: '12px', paddingLeft: '28px', height: '36px' }}
-            />
-            <span style={{ position: 'absolute', left: '8px', top: '11px', color: 'var(--muted)' }}>
-              <IconSearch size={13} />
-            </span>
-          </div>
+        <div style={{ position: 'relative', width: '260px' }}>
+          <input
+            type="text"
+            placeholder="Search audit trail..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="input-text"
+            style={{ fontSize: '12px', paddingLeft: '28px', height: '34px' }}
+          />
+          <span style={{ position: 'absolute', left: '8px', top: '10px', color: 'var(--muted)' }}>
+            <IconSearch size={13} />
+          </span>
         </div>
       </div>
 
       {/* Category Filter Tabs */}
-      <div className="filter-tab-bar">
+      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
         {[
           { id: 'all', label: `All Events (${events.length})` },
           { id: 'task', label: 'Task Runs' },
@@ -71,7 +69,7 @@ export const ActivityView: React.FC = () => {
             key={f.id}
             onClick={() => setSelectedCategory(f.id as any)}
             className={selectedCategory === f.id ? 'btn-primary' : 'btn-secondary'}
-            style={{ fontSize: '12px', padding: '6px 12px', minHeight: '34px' }}
+            style={{ fontSize: '11px', padding: '4px 10px' }}
           >
             {f.label}
           </button>
@@ -130,9 +128,6 @@ export const ActivityView: React.FC = () => {
             ))}
           </tbody>
         </table>
-        <div className="table-scroll-hint">
-          <span>Swipe for full audit history &rarr;</span>
-        </div>
       </div>
     </div>
   );

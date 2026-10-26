@@ -46,7 +46,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         <button
           onClick={onRunProfitAnalysis}
           className="btn-primary"
-          style={{ padding: '10px 16px', fontSize: '13px', width: 'auto', minHeight: '44px' }}
+          style={{ padding: '8px 16px', fontSize: '13px' }}
         >
           <span>Ask Assistant: &ldquo;Why did our profit fall this month?&rdquo;</span>
           <span style={{ fontSize: '15px' }}>&rarr;</span>
@@ -183,14 +183,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </tr>
             </tbody>
           </table>
-          <div className="table-scroll-hint">
-            <span>Swipe for full ledger columns &rarr;</span>
-          </div>
         </div>
       </div>
 
       {/* Two Column Section: Needs Attention & Recent Activity */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '20px' }}>
         {/* Needs Attention: Overdue Invoices & Approvals */}
         <div style={{
           backgroundColor: 'var(--surface)',

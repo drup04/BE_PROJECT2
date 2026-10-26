@@ -9,7 +9,7 @@ export const PrivacyView: React.FC = () => {
       backgroundColor: 'var(--surface)',
       border: '1px solid var(--hairline)',
       borderRadius: 'var(--radius-sm)',
-      padding: 'clamp(16px, 4vw, 32px)',
+      padding: '32px',
       display: 'flex',
       flexDirection: 'column',
       gap: '20px',
@@ -18,7 +18,7 @@ export const PrivacyView: React.FC = () => {
         <span className="badge badge-ochre" style={{ marginBottom: '8px' }}>
           Prototype Scope Disclaimer
         </span>
-        <h2 className="display-serif" style={{ fontSize: '24px', fontWeight: 600 }}>
+        <h2 className="display-serif" style={{ fontSize: '26px', fontWeight: 600 }}>
           Privacy & Synthetic Demo Data Statement
         </h2>
         <p style={{ color: 'var(--muted)', fontSize: '13px', marginTop: '4px' }}>

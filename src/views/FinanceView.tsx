@@ -46,18 +46,18 @@ export const FinanceView: React.FC = () => {
         </div>
 
         {/* Period Selector Toggle */}
-        <div style={{ display: 'flex', width: '100%', maxWidth: '380px', backgroundColor: 'var(--surface-alt)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hairline)' }}>
+        <div style={{ display: 'flex', backgroundColor: 'var(--surface-alt)', padding: '3px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hairline)' }}>
           <button
             onClick={() => setSelectedPeriod('current')}
             className={selectedPeriod === 'current' ? 'btn-primary' : 'btn-ghost'}
-            style={{ flex: 1, fontSize: '12px', padding: '7px 10px', minHeight: '38px', justifyContent: 'center' }}
+            style={{ fontSize: '12px', padding: '5px 12px' }}
           >
             October 2026 (Current)
           </button>
           <button
             onClick={() => setSelectedPeriod('previous')}
             className={selectedPeriod === 'previous' ? 'btn-primary' : 'btn-ghost'}
-            style={{ flex: 1, fontSize: '12px', padding: '7px 10px', minHeight: '38px', justifyContent: 'center' }}
+            style={{ fontSize: '12px', padding: '5px 12px' }}
           >
             September 2026 (Baseline)
           </button>
@@ -196,9 +196,6 @@ export const FinanceView: React.FC = () => {
               </tr>
             </tbody>
           </table>
-          <div className="table-scroll-hint">
-            <span>Swipe for full P&amp;L columns &rarr;</span>
-          </div>
         </div>
       </div>
 
@@ -220,7 +217,7 @@ export const FinanceView: React.FC = () => {
           </div>
 
           {/* Category Filter */}
-          <div className="filter-tab-bar">
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             {[
               { id: 'all', label: 'All Categories' },
               { id: 'raw_materials', label: 'Raw Materials' },
@@ -232,7 +229,7 @@ export const FinanceView: React.FC = () => {
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id as any)}
                 className={selectedCategory === cat.id ? 'btn-primary' : 'btn-secondary'}
-                style={{ fontSize: '12px', padding: '6px 12px', minHeight: '34px' }}
+                style={{ fontSize: '11px', padding: '4px 10px' }}
               >
                 {cat.label}
               </button>
@@ -275,9 +272,6 @@ export const FinanceView: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <div className="table-scroll-hint">
-            <span>Swipe for full expense ledger &rarr;</span>
-          </div>
         </div>
       </div>
     </div>
